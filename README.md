@@ -30,7 +30,7 @@ For local development:
 
 ```bash
 python3 -m pip install -e .
-python3 -m unittest
+PYTHONPATH=src python3 -m unittest discover -s tests
 ```
 
 ## CLI Usage

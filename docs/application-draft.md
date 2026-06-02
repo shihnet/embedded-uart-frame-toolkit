@@ -6,7 +6,7 @@ Embedded UART Frame Toolkit
 
 ## Repository
 
-TODO: Add public GitHub repository URL after publishing.
+https://github.com/shihnet/embedded-uart-frame-toolkit
 
 ## Maintainer Role
 
