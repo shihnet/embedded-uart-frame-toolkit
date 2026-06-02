@@ -66,6 +66,22 @@ uart-frame render-profile examples/public-profile.json
 The profile format is documented in
 [docs/protocol-profile-format.md](docs/protocol-profile-format.md).
 
+## Smoke Tests
+
+Build a public-safe dry-run smoke-test frame:
+
+```bash
+uart-frame smoke-test --dry-run --cmd 0x42
+```
+
+Validate an expected response frame without opening a serial port:
+
+```bash
+uart-frame smoke-test --dry-run --cmd 0x42 --response "55 AA 42 00 42" --expect-cmd 0x42
+```
+
+See [docs/smoke-test-helper.md](docs/smoke-test-helper.md).
+
 ## Why This Exists
 
 Embedded teams often need a quick, auditable way to:

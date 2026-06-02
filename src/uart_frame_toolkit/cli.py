@@ -6,6 +6,7 @@ import sys
 
 from .frame import FrameError, decode_frame, encode_frame
 from .profile import ProfileError, load_profile, render_markdown_table
+from .smoke import SmokeTestError, dry_run_smoke_test
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -22,6 +23,13 @@ def main(argv: list[str] | None = None) -> int:
     render_parser = subparsers.add_parser("render-profile", help="render a JSON profile as Markdown")
     render_parser.add_argument("profile", help="path to a public-safe JSON protocol profile")
 
+    smoke_parser = subparsers.add_parser("smoke-test", help="build and validate a smoke-test frame")
+    smoke_parser.add_argument("--cmd", required=True, help="request command byte, e.g. 0x42")
+    smoke_parser.add_argument("--payload", default="", help="request payload bytes, e.g. '01 02'")
+    smoke_parser.add_argument("--dry-run", action="store_true", help="build request without opening a port")
+    smoke_parser.add_argument("--response", help="optional response frame bytes to validate")
+    smoke_parser.add_argument("--expect-cmd", help="optional expected response command byte")
+
     args = parser.parse_args(argv)
 
     try:
@@ -36,10 +44,23 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(frame.as_dict(), separators=(",", ":")))
             return 0
 
-        rendered = render_markdown_table(load_profile(args.profile))
-        print(rendered, end="")
+        if args.command == "render-profile":
+            rendered = render_markdown_table(load_profile(args.profile))
+            print(rendered, end="")
+            return 0
+
+        if not args.dry_run:
+            raise SmokeTestError("only --dry-run is supported until a serial backend is added")
+        expected_cmd = _parse_byte(args.expect_cmd) if args.expect_cmd else None
+        result = dry_run_smoke_test(
+            _parse_byte(args.cmd),
+            _parse_bytes(args.payload),
+            _parse_bytes(args.response) if args.response else None,
+            expected_cmd,
+        )
+        print(json.dumps(result.as_dict(), separators=(",", ":")))
         return 0
-    except (FrameError, ProfileError) as exc:
+    except (FrameError, ProfileError, SmokeTestError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
