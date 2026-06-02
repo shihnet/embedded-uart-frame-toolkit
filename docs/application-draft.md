@@ -10,55 +10,81 @@ https://github.com/shihnet/embedded-uart-frame-toolkit
 
 ## Maintainer Role
 
-I am the owner and maintainer of this repository.
+I am the owner and maintainer of this public repository.
 
-## Project Summary
+## Short Project Summary
 
-This project provides a small Python CLI and library for encoding and decoding
-simple framed UART messages used in embedded firmware bring-up, QA tools, and
-protocol documentation.
+Embedded UART Frame Toolkit is an early-stage open source Python CLI and library
+for encoding, decoding, documenting, and smoke-testing simple framed UART
+messages used in embedded firmware bring-up and QA workflows.
 
 The project is intentionally generic and public-safe. It avoids private
-firmware, customer data, vendor-specific command tables, and confidential
-hardware details.
+firmware, customer data, vendor-specific command tables, private register maps,
+and confidential hardware details.
 
-## Why It Matters
+## Current Public Status
 
-Many embedded maintainers need repeatable tools for protocol smoke tests,
-factory QA utilities, and documentation examples. Even small frame mistakes can
-cause wasted debug time during firmware validation. This project gives
-maintainers a clean baseline they can adapt for public protocol profiles and
-test automation.
+The repository is public and has an initial maintenance trail:
+
+- Releases: `v0.1.0`, `v0.1.1`, `v0.1.2`
+- GitHub Actions test workflow: passing on `main` and release tags
+- Unit tests: 14 tests
+- Closed roadmap issues:
+  - `#1 Add serial-port smoke-test helper`
+  - `#2 Add Markdown protocol table generator`
+- Documentation:
+  - README
+  - MIT license
+  - CONTRIBUTING guide
+  - SECURITY policy
+  - protocol profile format documentation
+  - smoke-test helper documentation
+
+## Why This Project Matters
+
+Embedded maintainers often need small, repeatable tools to verify UART frame
+construction, reproduce host-tool transactions, document command examples, and
+run protocol smoke tests.
+
+Small framing, length, or checksum mistakes can waste significant debug time
+during firmware bring-up and QA validation. This project provides a lightweight
+public baseline that can be reused or adapted without exposing proprietary
+firmware or private product command tables.
+
+## What The Project Currently Provides
+
+- UART frame encoder and decoder
+- CLI commands for encode/decode workflows
+- Public-safe JSON protocol profile to Markdown table renderer
+- Dry-run smoke-test helper for request/response frame validation
+- Unit tests and GitHub Actions CI
+- Documentation for public profile format and smoke-test usage
 
 ## How I Plan To Use Codex
 
-- Improve CLI behavior and test coverage
-- Add public protocol profile support
-- Generate clearer Markdown protocol examples
-- Review pull requests and issue reports
-- Build release workflow automation
-- Evaluate security-sensitive parsing paths before publishing new features
+I plan to use Codex to support ongoing maintainer work, especially:
 
-## Requested Benefits
+- improving parser robustness and malformed-frame test coverage
+- reviewing future pull requests and issue-driven changes
+- generating and reviewing public-safe documentation examples
+- improving release workflow automation
+- adding optional serial backend support without making hardware-specific
+  command tables part of the core project
+- checking security-sensitive parsing paths before publishing new parser
+  features
 
-- ChatGPT Pro with Codex for maintainer workflows
-- API credits for automated protocol example generation and PR review workflows
+## Requested Support
+
+I am requesting maintainer support for this early-stage OSS project:
+
+- ChatGPT Pro with Codex for repository maintenance and code review workflows
+- API credits for documentation generation, test-case generation, and future
+  automated PR review experiments
 - Conditional Codex Security access if the project grows to include more parser
   or serial-device handling code
 
-## Current Status
+## Accuracy Note
 
-Initial public-safe implementation is ready locally. The next steps are to push
-the repository to GitHub, add a first release tag, and start collecting issues
-or roadmap items.
-
-## Verification Notes
-
-The repository should include:
-
-- README
-- MIT license
-- installable Python package
-- command-line interface
-- unit tests
-- clear roadmap
+This is an early-stage OSS project. I am not claiming that it is widely used
+yet. The current evidence is repository ownership, public code, passing CI,
+release tags, tests, documentation, and closed issue-driven maintenance work.
