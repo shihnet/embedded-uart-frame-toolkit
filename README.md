@@ -53,6 +53,8 @@ Expected output:
 {"cmd":34,"payload":[1,2,3],"checksum":43}
 ```
 
+More examples are available in [examples/basic-frames.md](examples/basic-frames.md).
+
 ## Why This Exists
 
 Embedded teams often need a quick, auditable way to:
