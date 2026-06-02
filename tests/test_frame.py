@@ -1,4 +1,6 @@
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 
 from uart_frame_toolkit.cli import main
 from uart_frame_toolkit import FrameError, decode_frame, encode_frame
@@ -26,7 +28,10 @@ class FrameTest(unittest.TestCase):
             decode_frame(bytes([0x55, 0xAA, 0x22, 0x02, 0x01, 0x23]))
 
     def test_cli_accepts_plain_hex_bytes(self):
-        self.assertEqual(main(["decode", "55 AA 22 03 01 02 03 2B"]), 0)
+        output = StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(main(["decode", "55 AA 22 03 01 02 03 2B"]), 0)
+        self.assertIn('"cmd":34', output.getvalue())
 
 
 if __name__ == "__main__":

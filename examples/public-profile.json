@@ -1,0 +1,20 @@
+{
+  "title": "Example Public UART Profile",
+  "description": "A small public-safe example profile for documentation generation.",
+  "commands": [
+    {
+      "cmd": "0x22",
+      "name": "Read version",
+      "payload": "-",
+      "response": "ASCII version string",
+      "notes": "Useful for smoke testing host-tool connectivity."
+    },
+    {
+      "cmd": "0x42",
+      "name": "Ping",
+      "payload": "-",
+      "response": "Echo or status byte",
+      "notes": "Generic liveness check."
+    }
+  ]
+}

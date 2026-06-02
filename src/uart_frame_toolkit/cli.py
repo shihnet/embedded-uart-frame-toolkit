@@ -5,6 +5,7 @@ import json
 import sys
 
 from .frame import FrameError, decode_frame, encode_frame
+from .profile import ProfileError, load_profile, render_markdown_table
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -18,6 +19,9 @@ def main(argv: list[str] | None = None) -> int:
     decode_parser = subparsers.add_parser("decode", help="decode a UART frame")
     decode_parser.add_argument("frame", help="frame bytes, e.g. '55 AA 22 00 22'")
 
+    render_parser = subparsers.add_parser("render-profile", help="render a JSON profile as Markdown")
+    render_parser.add_argument("profile", help="path to a public-safe JSON protocol profile")
+
     args = parser.parse_args(argv)
 
     try:
@@ -27,10 +31,15 @@ def main(argv: list[str] | None = None) -> int:
             print(_format_hex(encode_frame(cmd, payload)))
             return 0
 
-        frame = decode_frame(_parse_bytes(args.frame))
-        print(json.dumps(frame.as_dict(), separators=(",", ":")))
+        if args.command == "decode":
+            frame = decode_frame(_parse_bytes(args.frame))
+            print(json.dumps(frame.as_dict(), separators=(",", ":")))
+            return 0
+
+        rendered = render_markdown_table(load_profile(args.profile))
+        print(rendered, end="")
         return 0
-    except FrameError as exc:
+    except (FrameError, ProfileError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 

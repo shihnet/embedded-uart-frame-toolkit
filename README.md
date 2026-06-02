@@ -55,6 +55,17 @@ Expected output:
 
 More examples are available in [examples/basic-frames.md](examples/basic-frames.md).
 
+## Protocol Profiles
+
+Render a public-safe JSON protocol profile as a Markdown command table:
+
+```bash
+uart-frame render-profile examples/public-profile.json
+```
+
+The profile format is documented in
+[docs/protocol-profile-format.md](docs/protocol-profile-format.md).
+
 ## Why This Exists
 
 Embedded teams often need a quick, auditable way to:
