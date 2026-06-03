@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   unittest:
     runs-on: ubuntu-latest
@@ -15,5 +18,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install package
+        run: python -m pip install -e .
       - name: Run unit tests
-        run: PYTHONPATH=src python -m unittest discover -s tests
+        run: python -m unittest discover -s tests
+      - name: Run CLI smoke checks
+        run: |
+          uart-frame encode --cmd 0x22 --payload "01 02 03"
+          uart-frame decode "55 AA 22 03 01 02 03 2B"
+          uart-frame render-profile examples/public-profile.json
+          uart-frame smoke-test --dry-run --cmd 0x42
